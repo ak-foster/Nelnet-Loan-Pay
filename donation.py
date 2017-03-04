@@ -8,15 +8,12 @@ try:
     decrypt = boto3.client('kms').decrypt
 except botocore.exceptions.NoRegionError:
     aws_region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
-
     sns     = boto3.client('sns', region_name=aws_region)
     decrypt = boto3.client('kms', region_name=aws_region).decrypt
-
 
 phone_number='PHONE_INCLUDING_COUNTRYCODE_AND_AREA_CODE'
 
 from base64 import b64decode
-
 
 CC_number           = decrypt(CiphertextBlob=b64decode(os.environ['CC_number']))['Plaintext']
 CC_expiration_month = decrypt(CiphertextBlob=b64decode(os.environ['CC_expiration_month']))['Plaintext']
